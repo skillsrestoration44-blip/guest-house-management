@@ -39,7 +39,8 @@
                 @foreach($fields as $field)
                     @php
                         $name = $field['name'];
-                        $label = $field['label'] ?? __('messages.' . $name);
+                        $i18nKey = $field['i18n'] ?? $name;
+                        $label = $field['label'] ?? __('messages.' . $i18nKey);
                         $type = $field['type'] ?? 'text';
                         $value = old($name, $model->{$name} ?? ($field['default'] ?? ''));
                         $required = $field['required'] ?? false;
