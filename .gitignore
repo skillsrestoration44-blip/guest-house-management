@@ -27,3 +27,4 @@ storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 storage/logs/*
+TEST_PLAN.md

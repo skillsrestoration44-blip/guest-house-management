@@ -27,8 +27,9 @@
                 <thead>
                     <tr>
                         @foreach($columns as $col)
-                            <th data-i18n="{{ $col['titleKey'] ?? '' }}">
-                                {{ $col['title'] ?? __('messages.' . ($col['titleKey'] ?? $col['data'])) }}
+                            @php $i18nKey = $col['titleKey'] ?? $col['data']; @endphp
+                            <th data-i18n="{{ $i18nKey }}">
+                                {{ $col['title'] ?? __('messages.' . $i18nKey) }}
                             </th>
                         @endforeach
                     </tr>
