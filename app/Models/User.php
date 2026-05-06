@@ -38,4 +38,27 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $name)->exists();
     }
+
+    /**
+     * Whether this user is allowed to perform a specific permission key.
+     * Permission keys follow the convention `<module>.<action>`,
+     * e.g. `bookings.create`, `payments.delete`.
+     */
+    public function hasPermission(string $permissionName): bool
+    {
+        if ($this->hasRole('super_admin')) {
+            return true;
+        }
+        return $this->roles()
+            ->whereHas('permissions', function ($q) use ($permissionName) {
+                $q->where('name', $permissionName);
+            })
+            ->exists();
+    }
+
+    /** Convenience accessor for use in views: `@if($user->can_('bookings.create'))`. */
+    public function can_(string $permission): bool
+    {
+        return $this->hasPermission($permission);
+    }
 }

@@ -109,6 +109,11 @@ class DatabaseSeeder extends Seeder
             ['code_type' => 'expense', 'prefix' => 'EXP', 'next_number' => 1, 'digit_length' => 6, 'example' => 'EXP-000001'],
             ['code_type' => 'request', 'prefix' => 'REQ', 'next_number' => 1, 'digit_length' => 6, 'example' => 'REQ-000001'],
             ['code_type' => 'task', 'prefix' => 'TSK', 'next_number' => 1, 'digit_length' => 6, 'example' => 'TSK-000001'],
+            ['code_type' => 'housekeeping', 'prefix' => 'HK', 'next_number' => 1, 'digit_length' => 6, 'example' => 'HK-000001'],
+            ['code_type' => 'feedback', 'prefix' => 'FB', 'next_number' => 1, 'digit_length' => 6, 'example' => 'FB-000001'],
+            ['code_type' => 'complaint', 'prefix' => 'CMP', 'next_number' => 1, 'digit_length' => 6, 'example' => 'CMP-000001'],
+            ['code_type' => 'capa', 'prefix' => 'CAPA', 'next_number' => 1, 'digit_length' => 6, 'example' => 'CAPA-000001'],
+            ['code_type' => 'risk', 'prefix' => 'RSK', 'next_number' => 1, 'digit_length' => 6, 'example' => 'RSK-000001'],
         ];
         foreach ($codeSettings as $cs) {
             DB::table('code_settings')->updateOrInsert(['code_type' => $cs['code_type']], $cs + ['created_at' => now(), 'updated_at' => now()]);

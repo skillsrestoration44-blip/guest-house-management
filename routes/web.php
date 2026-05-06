@@ -78,6 +78,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'code_settings' => \App\Http\Controllers\Admin\CodeSettingController::class,
             'system_settings' => \App\Http\Controllers\Admin\SystemSettingController::class,
             'backups' => \App\Http\Controllers\Admin\BackupController::class,
+
+            /* ISO 9001 quality-management modules */
+            'guest-feedbacks' => \App\Http\Controllers\Admin\GuestFeedbackController::class,
+            'complaints' => \App\Http\Controllers\Admin\ComplaintController::class,
+            'risks' => \App\Http\Controllers\Admin\RiskController::class,
+            'supplier-scorecards' => \App\Http\Controllers\Admin\SupplierScorecardController::class,
+            'corrective-actions' => \App\Http\Controllers\Admin\CorrectiveActionController::class,
         ];
 
         foreach ($resources as $slug => $controller) {
