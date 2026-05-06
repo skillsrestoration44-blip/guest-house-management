@@ -183,6 +183,21 @@
             </ul>
         </li>
 
+        {{-- Quality (ISO 9001) --}}
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-patch-check"></i></div>
+                <div class="menu-title" data-i18n="quality">@lang('messages.quality')</div>
+            </a>
+            <ul>
+                <li><a href="{{ route('admin.guest-feedbacks.index') }}"><i class="bi bi-chat-heart"></i> <span data-i18n="guest_feedbacks">@lang('messages.guest_feedbacks')</span></a></li>
+                <li><a href="{{ route('admin.complaints.index') }}"><i class="bi bi-exclamation-circle"></i> <span data-i18n="complaints">@lang('messages.complaints')</span></a></li>
+                <li><a href="{{ route('admin.corrective-actions.index') }}"><i class="bi bi-clipboard-pulse"></i> <span data-i18n="corrective_actions">@lang('messages.corrective_actions')</span></a></li>
+                <li><a href="{{ route('admin.risks.index') }}"><i class="bi bi-shield-exclamation"></i> <span data-i18n="risks">@lang('messages.risks')</span></a></li>
+                <li><a href="{{ route('admin.supplier-scorecards.index') }}"><i class="bi bi-graph-up"></i> <span data-i18n="supplier_scorecards">@lang('messages.supplier_scorecards')</span></a></li>
+            </ul>
+        </li>
+
         {{-- Security --}}
         <li>
             <a href="javascript:;" class="has-arrow">

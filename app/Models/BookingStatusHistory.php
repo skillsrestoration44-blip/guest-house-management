@@ -15,6 +15,9 @@ class BookingStatusHistory extends Model
 
     protected $table = 'booking_status_histories';
 
+    /** Migration only has `created_at`, no `updated_at`. */
+    public const UPDATED_AT = null;
+
     protected $fillable = ['booking_id', 'old_status', 'new_status', 'reason', 'changed_by'];
 
     public function booking(): BelongsTo { return $this->belongsTo(\App\Models\Booking::class); }
