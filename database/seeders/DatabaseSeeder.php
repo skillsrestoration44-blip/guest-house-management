@@ -12,9 +12,46 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Top-level seeder.
+ *
+ * Phase 1 — bootstrap: branches, roles, permissions, the default super-admin
+ * user, payment methods, code_settings, and the singleton guest_house_setting
+ * row. These are required dependencies for every domain seeder below, so they
+ * must run inline before $this->call(...).
+ *
+ * Phase 2 — domain seeders: one Seeder class per logical group of tables in
+ * the migration files. Each seeder is idempotent (firstOrCreate / count
+ * guards) and depends only on what was created earlier in the chain. The
+ * order below mirrors the FK dependency order of the migrations.
+ */
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
+    {
+        $this->bootstrap();
+
+        $this->call([
+            CoreSystemSeeder::class,
+            RoomManagementSeeder::class,
+            GuestSeeder::class,
+            BookingSeeder::class,
+            StaySeeder::class,
+            ServiceSeeder::class,
+            InvoiceAndPaymentSeeder::class,
+            HousekeepingSeeder::class,
+            MaintenanceSeeder::class,
+            InventorySeeder::class,
+            AccountingSeeder::class,
+            NotificationSeeder::class,
+            WebsiteSeeder::class,
+            SecuritySeeder::class,
+            SystemSettingSeeder::class,
+            Iso9001Seeder::class,
+        ]);
+    }
+
+    protected function bootstrap(): void
     {
         $branches = [
             ['code' => 'BR-MAIN', 'name' => 'Main Branch', 'phone' => '012345678', 'manager_name' => 'Admin', 'is_default' => true, 'status' => 'active'],
