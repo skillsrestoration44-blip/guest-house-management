@@ -27,6 +27,15 @@
     }
 
     /* ----------------------------------------------------- */
+    /* Translation helper                                     */
+    /* (defined BEFORE first use so DataTables init can call  */
+    /* window.__ without throwing TypeError)                  */
+    /* ----------------------------------------------------- */
+    window.__ = function (key) {
+        return (window.appTranslations && window.appTranslations[key]) || key;
+    };
+
+    /* ----------------------------------------------------- */
     /* DataTables Bootstrap 5 paging                          */
     /* ----------------------------------------------------- */
     if ($.fn.dataTable) {
@@ -236,13 +245,6 @@
                 Swal.fire({ icon: 'error', title: window.__('error') || 'Error' });
             });
     });
-
-    /* ----------------------------------------------------- */
-    /* Translation helper                                     */
-    /* ----------------------------------------------------- */
-    window.__ = function (key) {
-        return (window.appTranslations && window.appTranslations[key]) || key;
-    };
 
     /* ----------------------------------------------------- */
     /* DOM ready                                              */
