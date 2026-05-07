@@ -62,6 +62,10 @@ class AppServiceProvider extends ServiceProvider
             Models\NotificationTemplate::class, Models\WebsitePage::class,
             Models\OnlineBookingRequest::class, Models\GuestHouseSetting::class,
             Models\CodeSetting::class, Models\SystemSetting::class,
+            /* ISO 9001 models — added in PR#2 audit/compliance work */
+            Models\GuestFeedback::class, Models\Complaint::class,
+            Models\CorrectiveAction::class, Models\Risk::class,
+            Models\SupplierScorecard::class, Models\DocumentVersion::class,
         ];
         foreach ($auditable as $modelClass) {
             $modelClass::observe(AuditObserver::class);
