@@ -4,9 +4,8 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\BranchSwitchController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', fn () => redirect()->route('admin.dashboard'));
 
 Route::post('/locale/switch', [LocaleController::class, 'switch']);
 Route::get('/locale/switch', function (\Illuminate\Http\Request $r) {
@@ -16,6 +15,23 @@ Route::get('/locale/switch', function (\Illuminate\Http\Request $r) {
 });
 
 Route::post('/branch/switch', [BranchSwitchController::class, 'switch']);
+
+/*
+|--------------------------------------------------------------------------
+| Public API (consumed by the Vue.js front layout)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('api/public')->group(function () {
+    Route::get('rooms', [PublicSiteController::class, 'rooms']);
+    Route::get('rooms/{id}', [PublicSiteController::class, 'room'])->whereNumber('id');
+    Route::get('branches', [PublicSiteController::class, 'branches']);
+    Route::get('room-types', [PublicSiteController::class, 'roomTypes']);
+    Route::get('services', [PublicSiteController::class, 'services']);
+    Route::get('pages/{slug}', [PublicSiteController::class, 'page']);
+    Route::post('online-booking', [PublicSiteController::class, 'submitBooking']);
+    Route::post('online-booking/status', [PublicSiteController::class, 'lookupBooking']);
+    Route::post('contact', [PublicSiteController::class, 'contact']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -92,3 +108,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         }
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Public Front Layout (Vue.js 3 SPA)
+|--------------------------------------------------------------------------
+| Serves the Vue SPA for `/` and any non-admin, non-api route. Vue Router
+| owns client-side navigation for these paths (home, rooms, booking, etc.).
+*/
+Route::get('/', fn () => view('frontend'))->name('frontend.home');
+
+Route::get('/{any}', fn () => view('frontend'))
+    ->where('any', '^(?!admin|api|locale|branch|build|storage|_debugbar|vendor).*$')
+    ->name('frontend.spa');

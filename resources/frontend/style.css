@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@source '../**/*.vue';
+@source '../**/*.js';
+
+@theme {
+    --color-brand-50: #f5f7fa;
+    --color-brand-100: #e4e9f2;
+    --color-brand-200: #c5cee0;
+    --color-brand-300: #8f9bb3;
+    --color-brand-400: #4f5b76;
+    --color-brand-500: #1f2937;
+    --color-brand-600: #1a2230;
+    --color-brand-700: #141a25;
+    --color-brand-800: #0f141d;
+    --color-brand-900: #0a0e15;
+
+    --color-accent-50: #fff7ed;
+    --color-accent-100: #ffedd5;
+    --color-accent-200: #fed7aa;
+    --color-accent-300: #fdba74;
+    --color-accent-400: #fb923c;
+    --color-accent-500: #f97316;
+    --color-accent-600: #ea580c;
+    --color-accent-700: #c2410c;
+    --color-accent-800: #9a3412;
+    --color-accent-900: #7c2d12;
+
+    --font-sans:
+        'Inter', 'Noto Sans Khmer', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: var(--font-sans);
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center rounded-md bg-accent-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .btn-outline {
+        @apply inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors duration-150 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+    }
+
+    .btn-dark {
+        @apply inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+    }
+
+    .container-page {
+        @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .section {
+        @apply py-12 sm:py-16 lg:py-20;
+    }
+
+    .heading-1 {
+        @apply font-serif text-4xl font-bold tracking-tight text-brand-500 sm:text-5xl lg:text-6xl;
+    }
+
+    .heading-2 {
+        @apply font-serif text-3xl font-bold tracking-tight text-brand-500 sm:text-4xl;
+    }
+
+    .heading-3 {
+        @apply font-serif text-2xl font-bold tracking-tight text-brand-500 sm:text-3xl;
+    }
+
+    .card {
+        @apply overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md;
+    }
+
+    .input {
+        @apply block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-accent-500 focus:outline-none focus:ring-1 focus:ring-accent-500;
+    }
+
+    .label {
+        @apply mb-1 block text-sm font-medium text-gray-700;
+    }
+
+    .badge {
+        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+    }
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
+}
