@@ -3,33 +3,54 @@
 @source '../**/*.vue';
 @source '../**/*.js';
 
-@theme {
-    --color-brand-50: #f5f7fa;
-    --color-brand-100: #e4e9f2;
-    --color-brand-200: #c5cee0;
-    --color-brand-300: #8f9bb3;
-    --color-brand-400: #4f5b76;
-    --color-brand-500: #1f2937;
-    --color-brand-600: #1a2230;
-    --color-brand-700: #141a25;
-    --color-brand-800: #0f141d;
-    --color-brand-900: #0a0e15;
+/* ───────────────────────────────────────────────────────────────
+   Local Khmer fonts (do not depend on Google CDN)
+   ─────────────────────────────────────────────────────────────── */
+@font-face {
+    font-family: 'Noto Sans Khmer';
+    src: url('/assets/fonts/NotoSansKhmer.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
 
-    --color-accent-50: #fff7ed;
-    --color-accent-100: #ffedd5;
-    --color-accent-200: #fed7aa;
-    --color-accent-300: #fdba74;
-    --color-accent-400: #fb923c;
-    --color-accent-500: #f97316;
-    --color-accent-600: #ea580c;
-    --color-accent-700: #c2410c;
-    --color-accent-800: #9a3412;
-    --color-accent-900: #7c2d12;
+@font-face {
+    font-family: 'Moul';
+    src: url('/assets/fonts/Moul-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    /* ─── Brand — deep teal-slate (luxury hospitality) ────── */
+    --color-brand-50: #f0f9f8;
+    --color-brand-100: #d9eeec;
+    --color-brand-200: #b1ddd9;
+    --color-brand-300: #7ec2bd;
+    --color-brand-400: #4ca29c;
+    --color-brand-500: #0f3a39;
+    --color-brand-600: #0d2e2d;
+    --color-brand-700: #0a2322;
+    --color-brand-800: #061715;
+    --color-brand-900: #030b0a;
+
+    /* ─── Accent — warm gold (refined CTAs) ───────────────── */
+    --color-accent-50: #fdf9ef;
+    --color-accent-100: #fbf2d6;
+    --color-accent-200: #f6e3a9;
+    --color-accent-300: #efce75;
+    --color-accent-400: #e6b347;
+    --color-accent-500: #d4972a;
+    --color-accent-600: #b87a1f;
+    --color-accent-700: #95601b;
+    --color-accent-800: #774b1c;
+    --color-accent-900: #5f3c1a;
 
     --font-sans:
         'Inter', 'Noto Sans Khmer', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+    --font-serif: 'Playfair Display', 'Moul', ui-serif, Georgia, serif;
 }
 
 html {
@@ -41,21 +62,39 @@ body {
     font-family: var(--font-sans);
 }
 
+/* When the page locale is Khmer, prefer the Khmer display face for headings */
+html[lang='km'] body,
+html[lang='km'] .font-sans {
+    font-family: 'Noto Sans Khmer', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+html[lang='km'] .font-serif,
+html[lang='km'] h1,
+html[lang='km'] h2,
+html[lang='km'] h3 {
+    font-family: 'Moul', 'Noto Sans Khmer', 'Playfair Display', ui-serif, Georgia, serif;
+    letter-spacing: 0.01em;
+}
+
 @layer components {
     .btn {
-        @apply inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
 
     .btn-primary {
-        @apply inline-flex items-center justify-center rounded-md bg-accent-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-accent-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+        @apply inline-flex items-center justify-center rounded-lg bg-gradient-to-br from-accent-500 to-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:from-accent-600 hover:to-accent-700 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0;
     }
 
     .btn-outline {
-        @apply inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 transition-colors duration-150 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm transition-all duration-200 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
     }
 
     .btn-dark {
-        @apply inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+        @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-brand-600 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+    }
+
+    .btn-ghost {
+        @apply inline-flex items-center justify-center rounded-lg border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:border-white/60 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60;
     }
 
     .container-page {
@@ -63,7 +102,7 @@ body {
     }
 
     .section {
-        @apply py-12 sm:py-16 lg:py-20;
+        @apply py-14 sm:py-20 lg:py-24;
     }
 
     .heading-1 {
@@ -78,20 +117,38 @@ body {
         @apply font-serif text-2xl font-bold tracking-tight text-brand-500 sm:text-3xl;
     }
 
+    .eyebrow {
+        @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-accent-600 before:h-px before:w-8 before:bg-accent-500 after:h-px after:w-8 after:bg-accent-500;
+    }
+
     .card {
-        @apply overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md;
+        @apply overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_2px_8px_-2px_rgba(15,58,57,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-10px_rgba(15,58,57,0.18)];
+    }
+
+    .card-flat {
+        @apply overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-200 hover:border-brand-200 hover:shadow-md;
     }
 
     .input {
-        @apply block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-accent-500 focus:outline-none focus:ring-1 focus:ring-accent-500;
+        @apply block w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm shadow-sm transition-colors focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/30;
     }
 
     .label {
-        @apply mb-1 block text-sm font-medium text-gray-700;
+        @apply mb-1.5 block text-sm font-semibold text-gray-700;
     }
 
     .badge {
-        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+        @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+
+    /* Decorative gradient backgrounds */
+    .bg-warm-radial {
+        background-image: radial-gradient(at 20% 0%, var(--color-accent-100) 0px, transparent 50%),
+                          radial-gradient(at 80% 100%, var(--color-brand-50) 0px, transparent 55%);
+    }
+
+    .bg-deep-hero {
+        background-image: linear-gradient(135deg, rgba(3, 11, 10, 0.85) 0%, rgba(15, 58, 57, 0.7) 45%, rgba(15, 58, 57, 0.25) 100%);
     }
 }
 
