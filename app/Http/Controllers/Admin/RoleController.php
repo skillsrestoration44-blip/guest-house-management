@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseCrudController;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ class RoleController extends BaseCrudController
             'display_name' => 'required|string|max:150',
             'description' => 'nullable|string',
             'status' => 'required|in:active,inactive',
+        'permissions' => 'nullable|array',
+        'permissions.*' => 'integer|exists:permissions,id',
         ];
     }
 
@@ -39,37 +42,12 @@ class RoleController extends BaseCrudController
 
     protected function formViewData(\Illuminate\Database\Eloquent\Model $model): array
     {
+        $model->loadMissing('permissions');
+
         return [
-            'fields' => array (
-  0 => 
-  array (
-    'name' => 'name',
-    'required' => true,
-  ),
-  1 => 
-  array (
-    'name' => 'display_name',
-    'required' => true,
-  ),
-  2 => 
-  array (
-    'name' => 'description',
-    'type' => 'textarea',
-    'col' => 'col-12',
-  ),
-  3 => 
-  array (
-    'name' => 'status',
-    'type' => 'select',
-    'options' => 
-    array (
-      'active' => 'Active',
-      'inactive' => 'Inactive',
-    ),
-    'default' => 'active',
-  ),
-),
             'titleKey' => 'roles',
+            'permissionGroups' => $this->permissionGroups(),
+            'selectedPermissionIds' => $model->permissions->pluck('id')->all(),
         ];
     }
 
@@ -77,27 +55,27 @@ class RoleController extends BaseCrudController
     {
         return [
             'fields' => array (
-  0 => 
+  0 =>
   array (
     'name' => 'name',
     'required' => true,
   ),
-  1 => 
+  1 =>
   array (
     'name' => 'display_name',
     'required' => true,
   ),
-  2 => 
+  2 =>
   array (
     'name' => 'description',
     'type' => 'textarea',
     'col' => 'col-12',
   ),
-  3 => 
+  3 =>
   array (
     'name' => 'status',
     'type' => 'select',
-    'options' => 
+    'options' =>
     array (
       'active' => 'Active',
       'inactive' => 'Inactive',
@@ -114,6 +92,16 @@ class RoleController extends BaseCrudController
         return $data;
     }
 
+    protected function afterStore(Request $request, Model $model): void
+    {
+      $model->permissions()->sync($request->input('permissions', []));
+    }
+
+    protected function afterUpdate(Request $request, Model $model): void
+    {
+      $model->permissions()->sync($request->input('permissions', []));
+    }
+
     protected function indexViewData(\Illuminate\Http\Request $request): array
     {
         return [
@@ -122,5 +110,35 @@ class RoleController extends BaseCrudController
             'titleKey' => $this->titleKey,
             'readOnly' => false,
         ];
+    }
+
+    private function permissionGroups(): array
+    {
+      return Permission::query()
+        ->orderBy('module')
+        ->orderBy('name')
+        ->get()
+        ->groupBy('module')
+        ->map(function ($permissions, $module) {
+          $translatedLabel = __('messages.' . $module);
+          $label = $translatedLabel !== 'messages.' . $module
+            ? $translatedLabel
+            : str($module)->replace('_', ' ')->title()->toString();
+
+          return [
+            'label' => $label,
+            'permissions' => $permissions->map(function (Permission $permission) {
+              $rawLabel = $permission->display_name
+                ?: str($permission->name)->after('.')->replace('_', ' ')->title()->toString();
+
+              return [
+                'id' => $permission->id,
+                'label' => $rawLabel,
+                'hint' => $permission->name,
+              ];
+            })->values()->all(),
+          ];
+        })
+        ->all();
     }
 }

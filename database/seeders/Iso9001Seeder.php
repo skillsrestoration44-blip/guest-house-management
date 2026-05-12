@@ -152,19 +152,27 @@ class Iso9001Seeder extends Seeder
             $p  = [3, 4, 4, 5][$i % 4];
             $c  = [4, 5, 3, 4][$i % 4];
             $overall = round(($q + $d + $p + $c) / 4, 2);
-            SupplierScorecard::firstOrCreate(
-                ['supplier_id' => $supplier->id, 'period_start' => $start],
-                [
-                    'period_end'           => $end,
-                    'quality_score'        => $q,
-                    'delivery_score'       => $d,
-                    'price_score'          => $p,
-                    'communication_score'  => $c,
-                    'overall_score'        => $overall,
-                    'comments'             => 'Quarterly evaluation — ' . $supplier->name,
-                    'evaluated_by'         => 1,
-                ]
-            );
+            $existingScorecard = SupplierScorecard::query()
+                ->where('supplier_id', $supplier->id)
+                ->whereDate('period_start', $start)
+                ->first();
+
+            if ($existingScorecard) {
+                continue;
+            }
+
+            SupplierScorecard::create([
+                'supplier_id'          => $supplier->id,
+                'period_start'         => $start,
+                'period_end'           => $end,
+                'quality_score'        => $q,
+                'delivery_score'       => $d,
+                'price_score'          => $p,
+                'communication_score'  => $c,
+                'overall_score'        => $overall,
+                'comments'             => 'Quarterly evaluation — ' . $supplier->name,
+                'evaluated_by'         => 1,
+            ]);
         }
 
         /* 6. Document Versions (§4.2.3) — track 2 revisions of the home page policy */

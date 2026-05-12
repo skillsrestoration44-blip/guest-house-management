@@ -24,20 +24,22 @@
 
 <script>
   /* Sidebar collapse / mobile toggle */
-  jQuery(function ($) {
-    $(document).on('click', '.metismenu .has-arrow', function (e) {
+  jQuery(function($) {
+    $(document).on('click', '.metismenu .has-arrow', function(e) {
       e.preventDefault();
       $(this).parent('li').toggleClass('open');
     });
-    $(document).on('click', '.mobile-toggle-icon, .toggle-icon, .nav-toggle-icon', function () {
+    $(document).on('click', '.mobile-toggle-icon, .toggle-icon, .nav-toggle-icon', function() {
       $('.sidebar-wrapper').toggleClass('show');
     });
-    $('.metismenu li').each(function () {
+    $('.metismenu li').each(function() {
       const $a = $(this).find('a').first();
       const href = $a.attr('href');
       if (href && href !== '#' && href !== 'javascript:;' && window.location.href.indexOf(href) === 0) {
-        $(this).addClass('open');
-        $(this).parents('li').addClass('open');
+        $(this).addClass('active open');
+        $a.addClass('active');
+        $(this).parents('li').addClass('open active');
+        $(this).parents('li').children('a').addClass('active');
       }
     });
   });

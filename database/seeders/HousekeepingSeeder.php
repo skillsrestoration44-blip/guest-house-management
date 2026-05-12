@@ -42,22 +42,27 @@ class HousekeepingSeeder extends Seeder
         $rooms = Room::take(8)->get();
         foreach ($rooms as $i => $room) {
             $status = ['pending', 'cleaning', 'completed'][$i % 3];
-            $task = HousekeepingTask::firstOrCreate(
-                [
-                    'room_id'      => $room->id,
-                    'scheduled_at' => now()->addDays($i - 4),
-                ],
-                [
-                    'branch_id'   => $room->branch_id,
-                    'task_no'     => $codeGen->next('housekeeping'),
-                    'assigned_to' => $housekeepers->isNotEmpty() ? $housekeepers->random()->id : null,
-                    'started_at'  => $status !== 'pending' ? now()->subHours(1) : null,
-                    'completed_at'=> $status === 'completed' ? now()->subMinutes(15) : null,
-                    'status'      => $status,
-                    'note'        => 'Daily cleaning seed',
-                    'created_by'  => 1,
-                ]
-            );
+            $scheduledAt = now()->startOfDay()->addDays($i - 4)->setTime(8, 0);
+
+            $task = HousekeepingTask::query()
+                ->where('room_id', $room->id)
+                ->whereDate('scheduled_at', $scheduledAt->toDateString())
+                ->first();
+
+            if (!$task) {
+                $task = HousekeepingTask::create([
+                    'room_id'       => $room->id,
+                    'scheduled_at'  => $scheduledAt,
+                    'branch_id'     => $room->branch_id,
+                    'task_no'       => $codeGen->next('housekeeping'),
+                    'assigned_to'   => $housekeepers->isNotEmpty() ? $housekeepers->random()->id : null,
+                    'started_at'    => $status !== 'pending' ? now()->subHours(1) : null,
+                    'completed_at'  => $status === 'completed' ? now()->subMinutes(15) : null,
+                    'status'        => $status,
+                    'note'          => 'Daily cleaning seed',
+                    'created_by'    => 1,
+                ]);
+            }
 
             /* Add 5 checklist items to each task */
             $picks = array_slice(array_keys($created), 0, 5);

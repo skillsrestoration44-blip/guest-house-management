@@ -51,22 +51,31 @@ class AccountingSeeder extends Seeder
         ];
 
         foreach ($expenses as [$cat, $desc, $amt, $status, $branchCode]) {
-            Expense::firstOrCreate(
-                ['description' => $desc, 'expense_date' => now()->subDays(15)->toDateString()],
-                [
-                    'branch_id'           => $branches[$branchCode] ?? null,
-                    'expense_no'          => $codeGen->next('expense'),
-                    'expense_category_id' => $createdCats[$cat]->id,
-                    'amount'              => $amt,
-                    'payment_method_id'   => ($cat === 'Salaries & Wages' ? $bank?->id : $cash?->id),
-                    'reference_no'        => null,
-                    'attachment'          => null,
-                    'status'              => $status,
-                    'created_by'          => 1,
-                    'approved_by'         => $status !== 'pending' ? 1 : null,
-                    'approved_at'         => $status !== 'pending' ? now()->subDays(10) : null,
-                ]
-            );
+            $expenseDate = now()->subDays(15)->toDateString();
+            $existingExpense = Expense::query()
+                ->where('description', $desc)
+                ->whereDate('expense_date', $expenseDate)
+                ->first();
+
+            if ($existingExpense) {
+                continue;
+            }
+
+            Expense::create([
+                'description'         => $desc,
+                'expense_date'        => $expenseDate,
+                'branch_id'           => $branches[$branchCode] ?? null,
+                'expense_no'          => $codeGen->next('expense'),
+                'expense_category_id' => $createdCats[$cat]->id,
+                'amount'              => $amt,
+                'payment_method_id'   => ($cat === 'Salaries & Wages' ? $bank?->id : $cash?->id),
+                'reference_no'        => null,
+                'attachment'          => null,
+                'status'              => $status,
+                'created_by'          => 1,
+                'approved_by'         => $status !== 'pending' ? 1 : null,
+                'approved_at'         => $status !== 'pending' ? now()->subDays(10) : null,
+            ]);
         }
 
         /* Salaries: last 2 months for every active staff member */

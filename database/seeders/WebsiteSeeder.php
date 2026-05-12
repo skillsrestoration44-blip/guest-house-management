@@ -66,23 +66,32 @@ class WebsiteSeeder extends Seeder
         ];
 
         foreach ($reqs as $i => [$name, $phone, $email, $roomType, $guests, $deposit, $status, $branchCode, $method]) {
-            OnlineBookingRequest::firstOrCreate(
-                ['guest_name' => $name, 'check_in_date' => now()->addDays(7 + $i)->toDateString()],
-                [
-                    'branch_id'         => $branches[$branchCode] ?? null,
-                    'request_no'        => 'OBR-' . str_pad((string) ($i + 1), 6, '0', STR_PAD_LEFT),
-                    'phone'             => $phone,
-                    'email'             => $email,
-                    'room_type_id'      => $roomType?->id,
-                    'check_out_date'    => now()->addDays(7 + $i + 2)->toDateString(),
-                    'total_guests'      => $guests,
-                    'deposit_amount'    => $deposit,
-                    'payment_method_id' => $method?->id,
-                    'payment_reference' => 'WEB-' . random_int(10000, 99999),
-                    'status'            => $status,
-                    'note'              => 'Online booking request',
-                ]
-            );
+            $checkInDate = now()->addDays(7 + $i)->toDateString();
+            $existingRequest = OnlineBookingRequest::query()
+                ->where('guest_name', $name)
+                ->whereDate('check_in_date', $checkInDate)
+                ->first();
+
+            if ($existingRequest) {
+                continue;
+            }
+
+            OnlineBookingRequest::create([
+                'guest_name'         => $name,
+                'check_in_date'      => $checkInDate,
+                'branch_id'          => $branches[$branchCode] ?? null,
+                'request_no'         => 'OBR-' . str_pad((string) ($i + 1), 6, '0', STR_PAD_LEFT),
+                'phone'              => $phone,
+                'email'              => $email,
+                'room_type_id'       => $roomType?->id,
+                'check_out_date'     => now()->addDays(7 + $i + 2)->toDateString(),
+                'total_guests'       => $guests,
+                'deposit_amount'     => $deposit,
+                'payment_method_id'  => $method?->id,
+                'payment_reference'  => 'WEB-' . random_int(10000, 99999),
+                'status'             => $status,
+                'note'               => 'Online booking request',
+            ]);
         }
     }
 }

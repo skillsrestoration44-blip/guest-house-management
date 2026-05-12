@@ -96,16 +96,24 @@ class CoreSystemSeeder extends Seeder
                     $checkOut = '17:' . str_pad((string) random_int(0, 30), 2, '0', STR_PAD_LEFT) . ':00';
                 }
 
-                StaffAttendance::firstOrCreate(
-                    ['staff_id' => $staff->id, 'attendance_date' => $day->toDateString()],
-                    [
-                        'check_in_time'  => $checkIn,
-                        'check_out_time' => $checkOut,
-                        'status'         => $status,
-                        'note'           => null,
-                        'created_by'     => 1,
-                    ]
-                );
+                $existingAttendance = StaffAttendance::query()
+                    ->where('staff_id', $staff->id)
+                    ->whereDate('attendance_date', $day->toDateString())
+                    ->first();
+
+                if ($existingAttendance) {
+                    continue;
+                }
+
+                StaffAttendance::create([
+                    'staff_id'       => $staff->id,
+                    'attendance_date'=> $day->toDateString(),
+                    'check_in_time'  => $checkIn,
+                    'check_out_time' => $checkOut,
+                    'status'         => $status,
+                    'note'           => null,
+                    'created_by'     => 1,
+                ]);
             }
         }
     }
