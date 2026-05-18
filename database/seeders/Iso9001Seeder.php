@@ -175,27 +175,37 @@ class Iso9001Seeder extends Seeder
             ]);
         }
 
-        /* 6. Document Versions (§4.2.3) — track 2 revisions of the home page policy */
-        $home = WebsitePage::where('slug', 'home')->first();
-        if ($home) {
-            DocumentVersion::firstOrCreate(
-                ['versionable_type' => WebsitePage::class, 'versionable_id' => $home->id, 'version_number' => 1],
-                [
-                    'snapshot'    => $home->only(['slug', 'title', 'content', 'meta_title', 'meta_description', 'status']),
-                    'change_note' => 'Initial revision',
-                    'created_by'  => 1,
-                ]
-            );
-            DocumentVersion::firstOrCreate(
-                ['versionable_type' => WebsitePage::class, 'versionable_id' => $home->id, 'version_number' => 2],
-                [
-                    'snapshot'    => array_merge($home->only(['slug', 'title', 'content', 'meta_title', 'meta_description', 'status']), [
-                        'content' => '<h2>Welcome (revised)</h2><p>Updated welcome copy with new branch info.</p>',
-                    ]),
-                    'change_note' => 'Updated welcome copy after rebrand',
-                    'created_by'  => 1,
-                ]
-            );
+        /* 6. Document Versions (ISO 9001 §4.2.3 — Control of Documents)
+         *    Track at least 2 revisions of every website page so the admin
+         *    UI has a populated history view out of the box. */
+        $changeNotes = [
+            1 => 'Initial revision',
+            2 => 'Updated after rebrand / branch info refresh',
+        ];
+
+        foreach (WebsitePage::all() as $page) {
+            $baseSnapshot = $page->only(['slug', 'title', 'content', 'meta_title', 'meta_description', 'status']);
+
+            foreach ([1, 2] as $version) {
+                $snapshot = $baseSnapshot;
+                if ($version === 2) {
+                    $snapshot['content'] = '<h2>' . e($page->title) . ' (v2)</h2>' .
+                        '<p>Revision 2 — content updated for the latest standards review.</p>';
+                }
+
+                DocumentVersion::firstOrCreate(
+                    [
+                        'versionable_type' => WebsitePage::class,
+                        'versionable_id'   => $page->id,
+                        'version_number'   => $version,
+                    ],
+                    [
+                        'snapshot'    => $snapshot,
+                        'change_note' => $changeNotes[$version],
+                        'created_by'  => 1,
+                    ]
+                );
+            }
         }
     }
 }

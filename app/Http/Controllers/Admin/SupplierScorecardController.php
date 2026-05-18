@@ -36,7 +36,7 @@ class SupplierScorecardController extends BaseCrudController
     {
         return [
             ['data' => 'id'],
-            ['data' => 'supplier.name', 'name' => 'supplier.name'],
+            ['data' => 'supplier.name', 'name' => 'supplier.name', 'titleKey' => 'supplier'],
             ['data' => 'period_start'],
             ['data' => 'period_end'],
             ['data' => 'overall_score'],
