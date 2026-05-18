@@ -101,6 +101,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             'risks' => \App\Http\Controllers\Admin\RiskController::class,
             'supplier-scorecards' => \App\Http\Controllers\Admin\SupplierScorecardController::class,
             'corrective-actions' => \App\Http\Controllers\Admin\CorrectiveActionController::class,
+            'document-versions' => \App\Http\Controllers\Admin\DocumentVersionController::class,
         ];
 
         foreach ($resources as $slug => $controller) {

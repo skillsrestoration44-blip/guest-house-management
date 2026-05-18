@@ -195,6 +195,7 @@
                 <li><a href="{{ route('admin.corrective-actions.index') }}"><i class="bi bi-clipboard-pulse"></i> <span data-i18n="corrective_actions">@lang('messages.corrective_actions')</span></a></li>
                 <li><a href="{{ route('admin.risks.index') }}"><i class="bi bi-shield-exclamation"></i> <span data-i18n="risks">@lang('messages.risks')</span></a></li>
                 <li><a href="{{ route('admin.supplier-scorecards.index') }}"><i class="bi bi-graph-up"></i> <span data-i18n="supplier_scorecards">@lang('messages.supplier_scorecards')</span></a></li>
+                <li><a href="{{ route('admin.document-versions.index') }}"><i class="bi bi-file-earmark-text"></i> <span data-i18n="document_versions">@lang('messages.document_versions')</span></a></li>
             </ul>
         </li>
 

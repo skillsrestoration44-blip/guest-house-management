@@ -190,9 +190,22 @@ return [
     'completed_date' => 'Completed Date',
     'room_already_booked' => 'This room is not available for the selected dates.',
 
+    // Document Versions (ISO 9001 §4.2.3)
+    'document_versions' => 'Document Versions',
+    'version_number' => 'Version No.',
+    'versionable_type' => 'Document Type',
+    'versionable_id' => 'Document ID',
+    'change_note' => 'Change Note',
+    'snapshot' => 'Snapshot',
+
     'security' => 'Security',
     'login_histories' => 'Login Histories',
     'audit_logs' => 'Audit Logs',
+    'auditable_type' => 'Record Type',
+    'auditable_id' => 'Record ID',
+    'ip_address' => 'IP Address',
+    'login_at' => 'Login At',
+    'logout_at' => 'Logout At',
 
     'system_settings' => 'System Settings',
     'guest_house_settings' => 'Guest House Settings',
@@ -275,7 +288,9 @@ return [
     'owner_id' => 'Owner',
     'guest_id' => 'Guest',
     'booking_id' => 'Booking',
+    'stay' => 'Stay',
     'stay_id' => 'Stay',
+    'file' => 'File',
     'room_id' => 'Room',
     'room_type_id' => 'Room Type',
     'from_room_id' => 'From Room',

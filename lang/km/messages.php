@@ -188,9 +188,22 @@ return [
     'completed_date' => 'កាលបរិច្ឆេទបញ្ចប់',
     'room_already_booked' => 'បន្ទប់នេះមិនអាចកក់សម្រាប់កាលបរិច្ឆេទដែលជ្រើសរើសបានទេ។',
 
+    // Document Versions (ISO 9001 §4.2.3)
+    'document_versions' => 'កំណែឯកសារ',
+    'version_number' => 'លេខកំណែ',
+    'versionable_type' => 'ប្រភេទឯកសារ',
+    'versionable_id' => 'លេខសម្គាល់ឯកសារ',
+    'change_note' => 'កំណត់ចំណាំការផ្លាស់ប្តូរ',
+    'snapshot' => 'រូបថតពេលនោះ',
+
     'security' => 'សុវត្ថិភាព',
     'login_histories' => 'ប្រវត្តិចូលប្រើ',
     'audit_logs' => 'កំណត់ហេតុ',
+    'auditable_type' => 'ប្រភេទកំណត់ត្រា',
+    'auditable_id' => 'លេខកំណត់ត្រា',
+    'ip_address' => 'IP Address',
+    'login_at' => 'ពេលចូល',
+    'logout_at' => 'ពេលចេញ',
 
     'system_settings' => 'ការកំណត់ប្រព័ន្ធ',
     'guest_house_settings' => 'ការកំណត់ផ្ទះសំណាក់',
@@ -272,7 +285,9 @@ return [
     'owner_id' => 'ម្ចាស់',
     'guest_id' => 'ភ្ញៀវ',
     'booking_id' => 'ការកក់',
+    'stay' => 'ការស្នាក់នៅ',
     'stay_id' => 'ការស្នាក់នៅ',
+    'file' => 'ឯកសារ',
     'room_id' => 'បន្ទប់',
     'room_type_id' => 'ប្រភេទបន្ទប់',
     'from_room_id' => 'ពីបន្ទប់',
